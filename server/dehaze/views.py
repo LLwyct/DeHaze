@@ -8,6 +8,38 @@ import cv2 as cv
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+
+# 最小堆调整
+def heapAdjust(h, lo, hi):
+    temp = h[lo]
+    i = (lo << 1)
+    while i <= hi:
+        if i < hi and h[i+1][2] < h[i][2]:
+            i += 1
+        if h[i][2] > temp[2]:
+            break
+        h[lo] = h[i]
+        lo = i
+        i = (i<<1)
+    h[lo] = temp
+
+
+# 初建堆，使前k个元素成为大根堆
+def heapConstruct(heap, k):
+    for i in range(k//2, 0, -1):
+        heapAdjust(heap, i, k)
+
+
+def topKMaxValue(heap, k):
+    heapConstruct(heap, k)
+    for i in range(k+1, len(heap)):
+        if heap[i][2] > heap[1][2]:
+            temp = heap[1]
+            heap[1] = heap[i]
+            heap[i] = temp
+            heapAdjust(heap, 1, k)
+
+
 def imgShow(img):
     cv.namedWindow('img', cv.WINDOW_AUTOSIZE)
     cv.imshow('img', img)
@@ -35,14 +67,12 @@ def getRough_T(J_D, omg=0.98):
 def getAirlight(J_D, ori_img):
     (x, y) = J_D.shape
     num = x*y // 1000
-    # arr = [[-1,-1,-1]]
-    arr = []
+    arr = [[-1,-1,-1]]
     for i in range(x):
         for j in range(y):
             arr.append([i,j,J_D[i][j]])
-    arr = sorted(arr, key=lambda x:x[2], reverse=True)
-    arr = arr[0:num]
-    # heapsort.topKMaxValue(arr, num)
+    topKMaxValue(arr, num)
+    arr = arr[1: 1+num]
     sum_b = 0
     sum_g = 0
     sum_r = 0
@@ -60,13 +90,9 @@ def getDarkChannelImage(ori_img, windowsize=3):
 
 def dehaze(ori_img):
     J_D = getDarkChannelImage(ori_img)
-    # imgShow(J_D)
     airlight = getAirlight(J_D, ori_img)
-    print(airlight)
     Rough_T = getRough_T(J_D)
-    # imgShow(Rough_T)
     res = calculate_J(ori_img, airlight, Rough_T)
-    # imgShow(res)
     return res
 
 
