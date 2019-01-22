@@ -1,9 +1,9 @@
 <template>
     <v-container>
-        <v-layout style="height: 40vh;margin-top: 30px;" justify-center>
-            <v-flex align-self-top style="text-align:center" xs12 md8 lg6 class="home-container">
-                <h1 class="home-title pt-4 mt-4">This is a dehaze application.</h1>
-                <h3 class="py-4">Extend your GitHub workflow beyond your browser with GitHub Desktop, completely redesigned with Electron. Get a unified cross-platform experience that’s completely open source and ready to customize.</h3>
+        <v-layout style="" justify-center>
+            <v-flex style="text-align:center" xs12 md8 lg8 xl6 class="home-container">
+                <h1 class="home-title pt-4 mt-4">This is a haze-free application.</h1>
+                <p class="py-4">The dark channel prior is a kind of statistics of the haze-free outdoor images. Using this prior with the haze imaging model, we can directly estimate the thickness of the haze and recover a high quality haze-free image.</p>
                 <v-flex xs12 md8 offset-md2 lg6 offset-lg3 class="py-4 mt-4">
                     <v-btn block outline to="/fix" replace>DEHAZE IMAGE</v-btn>
                 </v-flex>
@@ -15,6 +15,11 @@
 <style scoped>
 .home-title{
     font-size:  50px;
+}
+
+p{
+    line-height: 175%;
+    font-size: 1.5rem;
 }
 </style>
 

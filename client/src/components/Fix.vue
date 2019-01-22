@@ -115,21 +115,24 @@ export default {
             let formData = new FormData()
             formData.append('file', file)
             this.dialog = true
-            await dehazeServiece.dehaze(formData)
-                .then(function (response) {
-                    if (response.data.msg === 'ok') {
-                        _this.bordercolor = 'green'
-                        _this.response.msg = 'FINISHED!'
-                        _this.dehaze_img.src = `data:${file.type};base64,` + response.data.img
-                        _this.candownload = false
-                    }
-                })
-                .catch(function (error) {
-                    this.bordercolor = 'red'
-                    _this.response.msg = 'NETWORK ERROR!'
-                })
-            this.canclose = true
-            console.log(this.ori_img,this.dehaze_img)            
+            try {
+                const response = await dehazeServiece.dehaze(formData)
+                if (response.data.msg === 'ok') {
+                    this.bordercolor = 'green'
+                    this.response.msg = 'FINISHED!'
+                    this.dehaze_img.src = `data:${file.type};base64,` + response.data.img
+                    this.candownload = false
+                }
+            } catch(error) {
+                _this.response.msg = 'NETWORK ERROR!'
+                if (error.message.indexOf('timeout') !== -1) {
+                    _this.response.msg = 'REQEST TIMEOUT!'
+                }
+                _this.bordercolor = 'red'
+                
+            } finally {
+                this.canclose = true
+            }         
         },
         download () {
             let a = document.createElement('a')
