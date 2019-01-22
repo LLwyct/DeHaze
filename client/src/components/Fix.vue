@@ -40,12 +40,12 @@
                 </v-card>
                 </v-dialog>
             </v-flex>
-            <v-layout row justify-space-between>
-                <v-flex xs12 sm6>
-                    <v-img contain max-width="700" :src="ori_img.src" :height="ori_img.height" :width="ori_img.width" transition="slide-x-transition"></v-img>
+            <v-layout wrap>
+                <v-flex xs12 md6>
+                    <v-img :src="ori_img.src" transition="slide-y-transition"></v-img>
                 </v-flex>
-                <v-flex xs12 sm6>
-                    <v-img contain max-width="700" :src="dehaze_img.src" :height="dehaze_img.height" :width="dehaze_img.width" transition="slide-x-transition"></v-img>
+                <v-flex xs12 md6>
+                    <v-img :src="dehaze_img.src" transition="slide-y-transition"></v-img>
                 </v-flex>
             </v-layout>
         </v-layout>
@@ -67,7 +67,7 @@ export default {
             ori_img: {
                 show: false,
                 height: 0,
-                width: 10,
+                width: 0,
                 src: '',
                 name: null
             },
@@ -88,7 +88,8 @@ export default {
             
             // 创建一个原始图片对象
             let original_image = new Image()
-            original_image.onload = function() {
+
+            original_image.onload = function () {
                 _this.ori_img.src = original_image.src
                 _this.ori_img.width = original_image.naturalWidth
                 _this.ori_img.height = original_image.naturalHeight
