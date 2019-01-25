@@ -6,7 +6,7 @@ Vue.use(Router)
 import notFound from '@/components/notFound'
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
