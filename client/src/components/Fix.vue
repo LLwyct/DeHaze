@@ -25,6 +25,7 @@
                     v-if="!canclose"
                     >
                     </v-progress-circular>
+                    <!-- <Loader></Loader> -->
                     <h3 v-if="canclose">{{response.msg}}</h3>
                     <v-card-actions>
                     <v-spacer></v-spacer>
@@ -54,8 +55,12 @@
 
 <script>
 import dehazeServiece from '@/services/dehazeService'
+import Loader from '@/components/Loader'
 
 export default {
+    components: {
+        Loader
+    },
     data () {
         return {
             bordercolor: 'primary',
