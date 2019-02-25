@@ -61,10 +61,7 @@ typings/
 .next
 
 # don't upload image/*
-*.jpg
-*.jpeg
-*.png
-*.bmp
-
-# don't upload sql file
-*.sqlite
+# *.jpg
+# *.jpeg
+# *.png
+# *.bmp
