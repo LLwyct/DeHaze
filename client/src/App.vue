@@ -1,14 +1,7 @@
 <template>
     <v-app>
-        <v-content>
-            <Header></Header>
-            <keep-alive>
-                <router-view />
-            </keep-alive>
-            <Footer></Footer>
-        </v-content>
-        <div class="hidden-md-and-up">
-            <v-navigation-drawer v-model="$store.state.drawer" absolute app temporary>
+        <!-- <div class="hidden-md-and-up"> -->
+            <v-navigation-drawer v-model="$store.state.drawer" fixed app>
                     <v-list dense class="pt-0">
                         <v-list-tile v-for="item in items" :key="item.title" @click="linkTo(item.title)">
                             <v-list-tile-action>
@@ -20,7 +13,14 @@
                         </v-list-tile>
                     </v-list>
             </v-navigation-drawer>
-        </div>
+        <!-- </div> -->
+        <Header></Header>
+        <v-content>
+            <keep-alive>
+                <router-view />
+            </keep-alive>
+        </v-content>
+        <Footer></Footer>
     </v-app>
 </template>
 
@@ -35,7 +35,7 @@ export default {
             items: [
                 {
                     title: 'home',
-                    icon: 'dashboard'
+                    icon: 'home'
                 },
                 {
                     title: 'about',
@@ -43,7 +43,7 @@ export default {
                 },
                 {
                     title: 'fix',
-                    icon: 'dashboard'
+                    icon: 'build'
                 }
             ]
         }

@@ -51,9 +51,4 @@ export default {
     text-shadow: 10px 5px 3px #999;
     
 }
-/* @media screen and (max-width: 600px) {  
-    .display{
-        display: none;
-    }
-} */
 </style>
