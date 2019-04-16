@@ -6,7 +6,7 @@
                     pick one image to dehaze
                     <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
-                <v-btn @click="download" block large color="success" class="white--text" depressed :disabled="candownload">
+                <v-btn @click="download" block large color="success" class="white--text" depressed :disabled="!candownload">
                     download dehazed image
                     <v-icon right dark>cloud_download</v-icon>
                 </v-btn>
@@ -82,59 +82,48 @@ export default {
                 width: 0,
                 src: ''
             },
-            candownload: true
+            candownload: false
         }
     },
     methods: {
         async onImageChanged (e) {
-            let _this = this
-            // 从input读取文件
-            let file = e.target.files[0]
-            
-            // 创建一个原始图片对象
-            let original_image = new Image()
-
-            original_image.onload = function () {
-                _this.ori_img.src = original_image.src
-                _this.ori_img.width = original_image.naturalWidth
-                _this.ori_img.height = original_image.naturalHeight
-                _this.dehaze_img.width = original_image.naturalWidth
-                _this.dehaze_img.height = original_image.naturalHeight
-            }
-            //新建一个FileReader对象
-            let reader = new FileReader()
-            reader.onload = function(e) {
-                //将img标签的src换成base64格式，并显示出来
-                original_image.src = e.target.result
-            }
-            await reader.readAsDataURL(file)
-            this.ori_img.name = file.name
-            this.ori_img.type = file.type
-            if (file.type.indexOf('image/') === -1) {
+            let files = this.$refs.upload.files;
+            if (files.length != 1 || files[0].type.indexOf('image/') === -1) {
                 this.bordercolor = 'red'
                 this.dialog = true
                 this.canclose = true
                 this.response.msg = 'FILE TYPE ERROR!'
                 return
             }
+            let ori_img_tag = this.ori_img;
+            //新建一个FileReader对象
+            let reader = new FileReader();
+            reader.onload = (function (ori_img_tag) {
+                return function (e) {
+                    //将img标签的src换成base64格式，并显示出来
+                    ori_img_tag.src = e.target.result;
+                }
+            })(ori_img_tag);
+            reader.readAsDataURL(files[0])
+            ori_img_tag.name = files[0].name
             // 向服务器发送数据
             let formData = new FormData()
-            formData.append('file', file)
+            formData.append('file', files[0])
             this.dialog = true
             try {
                 const response = await dehazeServiece.dehaze(formData)
                 if (response.data.msg === 'ok') {
                     this.bordercolor = 'green'
                     this.response.msg = 'FINISHED!'
-                    this.dehaze_img.src = `data:${file.type};base64,` + response.data.img
-                    this.candownload = false
+                    this.dehaze_img.src = `data:${files[0].type};base64,` + response.data.img
+                    this.candownload = true
                 }
             } catch(error) {
-                _this.response.msg = 'NETWORK ERROR!'
+                this.response.msg = 'NETWORK ERROR!'
                 if (error.message.indexOf('timeout') !== -1) {
-                    _this.response.msg = 'REQEST TIMEOUT!'
+                    this.response.msg = 'REQEST TIMEOUT!'
                 }
-                _this.bordercolor = 'red'
+                this.bordercolor = 'red'
                 
             } finally {
                 this.canclose = true
