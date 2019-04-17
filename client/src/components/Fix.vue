@@ -1,5 +1,5 @@
 <template>
-    <v-container class="main-container">
+    <v-container>
         <v-layout column>
             <v-flex>
                 <v-btn @click="$refs.upload.click()" block large color="blue-grey" class="white--text" depressed>
