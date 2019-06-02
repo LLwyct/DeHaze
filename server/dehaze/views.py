@@ -71,5 +71,22 @@ def index(request):
             "img": image_byte.decode('ascii')
         }))
     return HttpResponse("<h1>nothing</h1>")
+
+
+def checkAuth(request):
+    if request.method == "POST":
+        filnamelist = []
+        for file in os.listdir("./dehaze/static"):
+            # print(file)
+            if os.path.isfile("./dehaze/static/" + file):
+                filnamelist.append(file)
+        return HttpResponse(
+            json.dumps({
+                "msg": "ok",
+                "filenamelist": json.dumps(filnamelist)
+            })
+        )
+
+    
 # Create your views here.
 # python manage.py runserver 8081

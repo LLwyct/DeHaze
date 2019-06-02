@@ -28,6 +28,11 @@ export default new Router({
       component: () => import('@/components/Fix.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/components/Login.vue')
+    },
+    {
       path: '*',
       name: 'notfound',
       component: notFound

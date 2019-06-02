@@ -9,6 +9,8 @@
 
     `pip install django-cors-headers`
 
+    `pip install opencv-python`
+
 ## 使用说明
 `cd client`
 
