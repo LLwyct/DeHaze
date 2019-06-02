@@ -10,7 +10,7 @@
                     download dehazed image
                     <v-icon right dark>cloud_download</v-icon>
                 </v-btn>
-                <input type="file" id="upload" ref="upload" @change="onImageChanged" accept=".jpg, .jpeg, .png" style="display: none">
+                <input type="file" id="upload" ref="upload" @change="onImageChanged" accept=".jpg, .jpeg, .png, .bmp" style="display: none">
                 <v-dialog
                 v-model="dialog"
                 max-width="300"
